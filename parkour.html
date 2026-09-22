@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <Title>Parkour</Title>
+  </head>
+  <body>
+    <p class="js-parkour-level">
+      Parkour Level
+    </p>
+    
+    <input class="js-parkour-input">
+
+    <button class="js-check">
+      Check
+    </button>
+
+    <button class="js-generate">
+      Generate New Level
+    </button>
+
+    <p class="js-solution">
+
+    </p>
+
+    <p class="js-result">
+
+    </p>
+
+    <p>
+      Controls:<br>
+      F = Forward<br>
+      J = Jump<br>
+      Moves must be capitalized with no spaces in between.<br>
+      If you see a space, write FJ to cross it. <br>
+      If there are multiple spaces you must write FJ for each space.
+
+    </p>
+
+    <script>
+      const generateButton = document.querySelector('.js-generate');
+      const parkourLevel = document.querySelector('.js-parkour-level');
+      const checkButton = document.querySelector('.js-check');
+      const solutionText = document.querySelector('.js-solution');
+      const resultText = document.querySelector('.js-result');
+      let level = [];
+      let solution = [];
+
+      document.querySelector('.js-parkour-input').value = '';
+      
+
+      generateButton.addEventListener('click', generateLevel);
+      checkButton.addEventListener('click', moveSolution)
+
+
+      function generateLevel () {
+        parkourLevel.innerHTML = '';
+        level = [];
+
+        for (let i = 0; i < 10; i++) {
+          const randomNumber = Math.random();
+           if (randomNumber > 0 && randomNumber <= 1 / 3) {
+            level.push('_');
+          } else if (randomNumber > 1 / 3 && randomNumber <= 2 / 3) {
+            level.push('/');
+          } else if (randomNumber > 2 / 3) {
+            level.push('&nbsp;&nbsp;');
+          }
+        }
+
+        level.forEach((value) => {
+          const oldValues = parkourLevel.innerHTML;
+          parkourLevel.innerHTML = oldValues + value;
+        });
+      };
+
+      function moveSolution() {
+        solutionText.innerHTML = '';
+        solution = [];
+        level.forEach((value, index) => {
+          if (value === '/') {
+            solution.push('F');
+          } else if (value === '&nbsp;&nbsp;') {
+            solution.push('FJ')
+          } else if (value === '_') {
+            solution.push('F');
+          }
+        })
+
+        console.log(solution);
+
+        solution.forEach((value) => { 
+          const oldValues = solutionText.innerHTML;
+          solutionText.innerHTML = oldValues + value;
+        });
+
+        const value = document.querySelector('.js-parkour-input').value;
+
+        if (value === solutionText.innerHTML) {
+          resultText.innerHTML = 'You win!';
+        } else {
+          resultText.innerHTML = 'You lose!';
+        }
+      };
+    </script>
+  </body>
+</html>
